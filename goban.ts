@@ -7,6 +7,13 @@ enum Status {
 
 export class Goban {
   goban: string[];
+  directions: number[][] = [
+    [0, 1],
+    [1, 0],
+    [-1, 0],
+    [0, -1],
+  ];
+  stoneToFind: Status | undefined;
 
   constructor(goban: string[]) {
     this.goban = goban;
@@ -34,22 +41,36 @@ export class Goban {
 
   // x = col, y = row.
   isTaken(x: number, y: number): boolean {
-    const direction = [
-      [0, 1],
-      [1, 0],
-      [-1, 0],
-      [0, -1],
-    ];
+    const visited = new Set<string>();
+    this.stoneToFind = this.getStatus(x, y);
 
-    for (let i = 0; i < direction.length; i++) {
-      const adjacentStatus = this.getStatus(
-        x + direction[i][0],
-        y + direction[i][1]
-      );
+    if (this.stoneToFind === Status.EMPTY || this.stoneToFind === Status.OUT)
+      return false;
 
-      if (adjacentStatus && adjacentStatus === Status.EMPTY) return false;
-    }
+    const result = !this.hasFreedom(x, y, visited);
+    visited.clear();
 
-    return true;
+    return result;
   }
+
+  hasFreedom = (
+    modifiedx: number,
+    modifiedy: number,
+    visited: Set<string>
+  ): boolean => {
+    const key = `${modifiedx},${modifiedy}`;
+    if (visited.has(key)) return false;
+    visited.add(key);
+
+    for (const [dx, dy] of this.directions) {
+      const nx = modifiedx + dx;
+      const ny = modifiedy + dy;
+      const status = this.getStatus(nx, ny);
+
+      if (status === Status.EMPTY) return true;
+      if (status === this.stoneToFind && this.hasFreedom(nx, ny, visited))
+        return true;
+    }
+    return false;
+  };
 }

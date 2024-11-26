@@ -25,9 +25,9 @@ describe("Goban isTaken tests", () => {
   test("Black shape is not taken when it has a liberty", () => {
     const goban = new Goban(["oo.", "##.", "o#o", ".o."]);
 
-    expect(goban.isTaken(0, 1)).toBe(true);  // Flipped this, as it should be true.
+    expect(goban.isTaken(0, 1)).toBe(false);
     expect(goban.isTaken(1, 1)).toBe(false);
-    expect(goban.isTaken(1, 2)).toBe(true); // Flipped this, as it should be true as well.
+    expect(goban.isTaken(1, 2)).toBe(false);
   });
 
   test("Square shape is taken", () => {

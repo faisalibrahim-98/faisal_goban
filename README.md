@@ -12,5 +12,4 @@ To start and launch tests:
 
 1) I have converted the code into Typescript.
 2) The convention of x being the column and y being the row is kept.
-3) From my analysis on the examples provided in the read me. I was able to figure out that isTaken is a simple function that checks weather there is a free space available
-from the prespective of a given stone. If space is not available it returns true, otherwise false.
+3) The function hasFreedom cheecks the corresponding values to see weather a stone of same color is found and has libety. If it find one then it return false. other wise it looks at all other options and finally returns false.
